@@ -13,10 +13,11 @@
 
     body {
         font-family: 'Georgia', serif;
-        overflow: hidden;
-        height: 100vh;
+        overflow-x: hidden;
+        overflow-y: auto;
+        min-height: 100vh;
         margin: 0;
-
+        
         background:
             linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
             url("./1.png");
@@ -31,9 +32,9 @@
 
         /* Screens container - now only 3 screens */
         .screens-container {
-            display: flex;
-            width: 300vw;
-            height: 100vh;
+        display: flex;
+        width: 300vw;
+        min-height: 100vh;
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             transform: translateX(-100vw);
         }
