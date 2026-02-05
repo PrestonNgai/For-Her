@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day! 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Background with photo collage */
+        .photo-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: url('1.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .photo-background::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Screens container - now only 3 screens */
+        .screens-container {
+            display: flex;
+            width: 300vw;
+            height: 100vh;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(-100vw);
+        }
+
+        .screen {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Menu Screen */
+        .menu-content {
+            text-align: center;
+            padding: 40px;
+            z-index: 10;
+        }
+
+        .menu-content h1 {
+            font-size: 4rem;
+            color: #fff;
+            margin-bottom: 60px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            animation: fadeInDown 1s ease;
+        }
+
+        .menu-buttons {
+            display: flex;
+            gap: 30px;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .menu-btn {
+            padding: 20px 50px;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #8B1538 0%, #6B0F2A 100%);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 21, 56, 0.4);
+            font-family: 'Georgia', serif;
+        }
+
+        .menu-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(139, 21, 56, 0.6);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            padding: 15px 30px;
+            background: #8B1538;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            font-family: 'Georgia', serif;
+        }
+
+        .back-btn:hover {
+            background: #6B0F2A;
+            transform: translateY(-2px);
+        }
+
+        /* 3D Flower Screen */
+        #model-container {
+            width: 80%;
+            height: 80%;
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        #model-container canvas {
+            border-radius: 20px;
+            display: block;
+        }
+
+        .viewer-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(139, 21, 56, 0.9);
+            padding: 15px 30px;
+            border-radius: 30px;
+            color: white;
+            font-size: 0.9rem;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Letter Screen */
+        .letter-container {
+            perspective: 1500px;
+            cursor: pointer;
+        }
+
+        .letter {
+            width: 600px;
+            height: 800px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .letter.opened {
+            transform: rotateY(180deg);
+        }
+
+        .letter-side {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+        }
+
+        .letter-front {
+            background: linear-gradient(135deg, #fff 0%, #ffeef8 100%);
+            border: 3px solid #8B1538;
+        }
+
+        .letter-front-content {
+            text-align: center;
+        }
+
+        .letter-front-content .to-label {
+            font-size: 2rem;
+            color: #8B1538;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .letter-front-content .recipient {
+            font-size: 3.5rem;
+            color: #8B1538;
+            font-weight: bold;
+            font-family: 'Brush Script MT', cursive, 'Georgia', serif;
+        }
+
+        .letter-front-content .envelope-decoration {
+            margin-top: 40px;
+            font-size: 4rem;
+            color: #8B1538;
+            opacity: 0.3;
+        }
+
+        .letter-back {
+            background: linear-gradient(135deg, #fff9fc 0%, #fff 100%);
+            transform: rotateY(180deg);
+            border: 3px solid #8B1538;
+            overflow-y: auto;
+        }
+
+        .letter-content {
+            color: #333;
+            line-height: 2;
+            font-size: 1.3rem;
+        }
+
+        .letter-content .greeting {
+            font-size: 1.8rem;
+            color: #8B1538;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .letter-content .signature {
+            margin-top: 50px;
+            text-align: right;
+            font-size: 1.5rem;
+            color: #8B1538;
+            font-style: italic;
+        }
+
+        .tap-hint {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1.1rem;
+            opacity: 0.8;
+            animation: pulse 2s infinite;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .letter {
+                width: 90vw;
+                height: 600px;
+            }
+
+            .letter-content {
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+
+            .menu-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .menu-btn {
+                font-size: 1.2rem;
+                padding: 15px 35px;
+            }
+
+            .letter-front-content .recipient {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Photo collage background -->
+    <div id="photoBackground" class="photo-background"></div>
+
+    <!-- Screens Container -->
+    <div class="screens-container" id="screensContainer">
+        <!-- Screen 1: 3D Flower Model -->
+        <div class="screen">
+            <button class="back-btn" onclick="showMenu()">← Back</button>
+            <div id="model-container">
+                <div class="viewer-controls">
+                    🖱️ Drag to rotate • Scroll to zoom
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 2: Menu (Starting Point) -->
+        <div class="screen">
+            <div class="menu-content">
+                <h1>Happy Valentine's Day! 💕</h1>
+                <div class="menu-buttons">
+                    <button class="menu-btn" onclick="showFlowers()">View 3D Flower</button>
+                    <button class="menu-btn" onclick="showLetter()">Read My Letter</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 3: Letter -->
+        <div class="screen">
+            <button class="back-btn" onclick="showMenu()">← Back</button>
+            <div class="letter-container" onclick="toggleLetter()">
+                <div class="letter" id="letter">
+                    <!-- Front of letter -->
+                    <div class="letter-side letter-front">
+                        <div class="letter-front-content">
+                            <div class="to-label">To:</div>
+                            <div class="recipient">My Missy</div>
+                            <div class="envelope-decoration">♥</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Back of letter -->
+                    <div class="letter-side letter-back">
+                        <div class="letter-content">
+                            <div class="greeting">My Dearest Missy,</div>
+                            <p>
+                                Every moment with you feels like magic. You brighten my days 
+                                and fill my heart with joy. Thank you for being the amazing 
+                                person you are, and for choosing to share your life with me.
+                            </p>
+                            <p>
+                                This Valentine's Day, I want you to know how deeply I love you 
+                                and how grateful I am for every laugh, every adventure, and 
+                                every quiet moment we share together.
+                            </p>
+                            <p>
+                                You are my best friend, my partner, and my greatest love.
+                            </p>
+                            <div class="signature">Forever yours, ❤️</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tap-hint">Click to open/close</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Three.js Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+    <script>
+        const screensContainer = document.getElementById('screensContainer');
+        const letter = document.getElementById('letter');
+
+        // Three.js Scene Setup
+        let scene, camera, renderer, controls;
+        let flowerModel;
+        
+        function initThreeJS() {
+            const container = document.getElementById('model-container');
+            
+            // Scene
+            scene = new THREE.Scene();
+            scene.background = null; // Transparent background
+            
+            // Camera
+            camera = new THREE.PerspectiveCamera(
+                45,
+                container.clientWidth / container.clientHeight,
+                0.1,
+                1000
+            );
+            camera.position.set(0, 0.5, 4);
+            camera.lookAt(0, 0, 0);
+            
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ 
+                antialias: true, 
+                alpha: true 
+            });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setClearColor(0x000000, 0); // Fully transparent
+            container.appendChild(renderer.domElement);
+            
+            // Lights - increased intensity for better visibility
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
+            directionalLight.position.set(5, 5, 5);
+            scene.add(directionalLight);
+            
+            const fillLight = new THREE.DirectionalLight(0xfff0f5, 0.6);
+            fillLight.position.set(-5, 3, -5);
+            scene.add(fillLight);
+            
+            // Controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 1.0;
+            
+            // Load 3D Model
+            loadFlowerModel();
+            
+            // Handle window resize
+            window.addEventListener('resize', onWindowResize);
+            
+            // Animation loop
+            animate();
+        }
+        
+        function loadFlowerModel() {
+            // REPLACE 'path/to/your/flower.gltf' with your actual model path
+            // Export from Blender as .gltf or .glb format
+            const loader = new THREE.GLTFLoader();
+            
+            // For testing, we'll create a simple placeholder
+            // Replace this with: loader.load('your-flower-model.gltf', function(gltf) { ... });
+            createPlaceholderFlower();
+            
+            /* UNCOMMENT THIS WHEN YOU HAVE YOUR MODEL:
+            loader.load(
+                'path/to/your/flower.gltf', // or .glb
+                function(gltf) {
+                    flowerModel = gltf.scene;
+                    
+                    // Center the model
+                    const box = new THREE.Box3().setFromObject(flowerModel);
+                    const center = box.getCenter(new THREE.Vector3());
+                    flowerModel.position.sub(center);
+                    
+                    // Scale if needed
+                    const size = box.getSize(new THREE.Vector3());
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const scale = 2 / maxDim;
+                    flowerModel.scale.multiplyScalar(scale);
+                    
+                    scene.add(flowerModel);
+                },
+                function(xhr) {
+                    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+                },
+                function(error) {
+                    console.error('Error loading model:', error);
+                }
+            );
+            */
+        }
+        
+        function createPlaceholderFlower() {
+            // Simple placeholder flower - remove when you have your model
+            const group = new THREE.Group();
+            
+            // Stem (green)
+            const stemGeometry = new THREE.CylinderGeometry(0.05, 0.05, 2, 16);
+            const stemMaterial = new THREE.MeshPhongMaterial({ color: 0x2d5016 });
+            const stem = new THREE.Mesh(stemGeometry, stemMaterial);
+            stem.position.y = -0.5;
+            group.add(stem);
+            
+            // Flower center (yellow)
+            const centerGeometry = new THREE.SphereGeometry(0.2, 16, 16);
+            const centerMaterial = new THREE.MeshPhongMaterial({ color: 0xffd700 });
+            const center = new THREE.Mesh(centerGeometry, centerMaterial);
+            center.position.y = 0.5;
+            group.add(center);
+            
+            // Petals (burgundy red color)
+            const petalGeometry = new THREE.SphereGeometry(0.25, 16, 16);
+            const petalMaterial = new THREE.MeshPhongMaterial({ color: 0x8B1538 });
+            
+            for (let i = 0; i < 8; i++) {
+                const petal = new THREE.Mesh(petalGeometry, petalMaterial);
+                const angle = (i / 8) * Math.PI * 2;
+                petal.position.set(
+                    Math.cos(angle) * 0.5,
+                    0.5,
+                    Math.sin(angle) * 0.5
+                );
+                petal.scale.set(1, 0.5, 0.8);
+                group.add(petal);
+            }
+            
+            // Position the entire group
+            group.position.y = 0;
+            
+            scene.add(group);
+            flowerModel = group;
+        }
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        
+        function onWindowResize() {
+            const container = document.getElementById('model-container');
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        }
+
+        // Navigation functions
+        function showFlowers() {
+            screensContainer.style.transform = 'translateX(0)';
+            if (!renderer) {
+                initThreeJS();
+            }
+        }
+        
+        function showLetter() {
+            screensContainer.style.transform = 'translateX(-200vw)';
+            letter.classList.remove('opened');
+        }
+        
+        function showMenu() {
+            screensContainer.style.transform = 'translateX(-100vw)';
+        }
+        
+        function toggleLetter() {
+            letter.classList.toggle('opened');
+        }
+    </script>
+</body>
+</html>
