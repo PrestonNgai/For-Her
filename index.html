@@ -11,36 +11,23 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Georgia', serif;
-            overflow: hidden;
-            height: 100vh;
-            position: relative;
-        }
+    body {
+        font-family: 'Georgia', serif;
+        overflow: hidden;
+        height: 100vh;
+        margin: 0;
 
-        /* Background with photo collage */
-        .photo-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background-image: url('1.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
+        background:
+            linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+            url("./1.png");
 
-        .photo-background::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-        }
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+
+
 
         /* Screens container - now only 3 screens */
         .screens-container {
@@ -298,8 +285,6 @@
     </style>
 </head>
 <body>
-    <!-- Photo collage background -->
-    <div id="photoBackground" class="photo-background"></div>
 
     <!-- Screens Container -->
     <div class="screens-container" id="screensContainer">
